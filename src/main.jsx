@@ -3,9 +3,10 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Root from "./components/root/Root.jsx";
 import Home from "./components/home/Home.jsx";
 import Login from "./components/login/Login.jsx";
+import Register from "./components/register/Register.jsx";
+import Root from "./components/root/Root.jsx";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login></Login>,
+      },
+      {
+        path: "/register",
+        element: <Register></Register>,
       },
     ],
   },

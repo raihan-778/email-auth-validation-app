@@ -1,7 +1,9 @@
+import Navbar from "../navbar/Navbar";
+
 const Header = () => {
   return (
     <div>
-      <h1>This is Header Componet</h1>
+      <Navbar></Navbar>
     </div>
   );
 };
