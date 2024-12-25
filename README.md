@@ -16,3 +16,4 @@ Currently, two official plugins are available:
 5. regular expression implementation for password validation.
 6. Implementing error & success message showing in browser for login error & login success.
 7. Implement error for name, email, password & terms & conditions validation.
+8. Implement forget password validation using useReff.
