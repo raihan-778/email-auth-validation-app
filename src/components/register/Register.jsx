@@ -1,17 +1,39 @@
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import auth from "../../firebase/firebase.init";
 
 const Register = () => {
   const [userRegister, setUserRegister] = useState(null);
+  const [registerError, setRegisterError] = useState("");
+  const [success, setSuccess] = useState("");
   const handleRegister = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
     const user = { name, email, password };
-    console.log(name);
+    setRegisterError("");
+    setSuccess("");
+    if (password.length < 6) {
+      setRegisterError("Password must be at least 6 characters");
+      return;
+    }
 
-    setUserRegister(user);
     console.log(user);
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        const user = result.user;
+        setUserRegister(user);
+        toast.success("User Register Successfully");
+        setSuccess("User Register Successfully");
+        console.log("signUP", user);
+      })
+      .catch((error) => {
+        console.error(error);
+        setRegisterError(error.message);
+      });
   };
   return (
     <div>
@@ -49,6 +71,9 @@ const Register = () => {
             </button>
           </div>
         </form>
+        {registerError && (
+          <h6 className="font-bold text-2xl text-red-700">{registerError}</h6>
+        )}
       </div>
     </div>
   );
