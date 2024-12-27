@@ -5,20 +5,31 @@ import { toast } from "react-toastify";
 import auth from "../../firebase/firebase.init";
 
 const Login = () => {
-  const [loginUser, setLoginUser] = useState(null);
+  const [loginUser, setLoginUser] = useState;
+  const [registerError, setRegisterError] = useState("");
+  const [success, setSuccess] = useState("");
+  null;
 
   const handleLogin = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
 
+    // reset Register Error & success
+
+    setRegisterError("");
+    setSuccess("");
+
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
         const user = result.user;
+
         if (user?.uid && toast.success(`${user.email} login successfully`))
-          setLoginUser(user);
+          setSuccess("User Login Successfully");
+        setLoginUser(user);
       })
       .catch((error) => {
+        setRegisterError(error.message);
         toast.error("No User found with this email or password");
       });
     console.log("login button clicked", email);
@@ -76,6 +87,16 @@ const Login = () => {
               </span>
             </div>
           </form>
+          <div className="ml-6">
+            {" "}
+            {registerError ? (
+              <h6 className="font-bold text-2xl text-red-700">
+                {registerError}
+              </h6>
+            ) : (
+              <h6 className="font-bold text-2xl text-green-700">{success}</h6>
+            )}
+          </div>
         </div>
       </div>
     </div>
