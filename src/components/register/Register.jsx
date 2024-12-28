@@ -1,6 +1,7 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../../firebase/firebase.init";
 
@@ -112,6 +113,12 @@ const Register = () => {
           ) : (
             <h6 className="font-bold text-2xl text-green-700">{success}</h6>
           )}
+          <p>
+            Already have an account?{" "}
+            <span className="text-blue-400 underline">
+              <Link to="/login">Login here.</Link>
+            </span>
+          </p>
         </div>
       </div>
     </div>

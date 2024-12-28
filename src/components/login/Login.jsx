@@ -1,19 +1,25 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
+import {
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../../firebase/firebase.init";
 
 const Login = () => {
-  const [loginUser, setLoginUser] = useState;
+  const [loginUser, setLoginUser] = useState(null);
   const [registerError, setRegisterError] = useState("");
   const [success, setSuccess] = useState("");
   null;
+
+  const emailRef = useRef();
 
   const handleLogin = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
+    console.log(email, password);
 
     // reset Register Error & success
 
@@ -33,6 +39,24 @@ const Login = () => {
         toast.error("No User found with this email or password");
       });
     console.log("login button clicked", email);
+  };
+
+  const handleResetPassword = () => {
+    const email = emailRef.current.value;
+    console.log("send email to reset password");
+    if (!email) {
+      setRegisterError("Please Enter Your Email");
+      console.log("Please Enter Your Email", emailRef.current.value);
+      return;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setRegisterError("Please Enter Your Valid Email");
+
+      return;
+    }
+
+    sendPasswordResetEmail(auth, email)
+      .then(() => alert("Check your email for password reset"))
+      .catch((error) => setRegisterError(error.message));
   };
 
   return (
@@ -55,6 +79,7 @@ const Login = () => {
               <input
                 type="email"
                 name="email"
+                ref={emailRef}
                 placeholder="email"
                 className="input input-bordered"
                 required
@@ -72,7 +97,11 @@ const Login = () => {
                 required
               />
               <label className="label">
-                <a href="#" className="label-text-alt link link-hover">
+                <a
+                  onClick={handleResetPassword}
+                  href="#"
+                  className="label-text-alt link link-hover"
+                >
                   Forgot password?
                 </a>
               </label>
@@ -81,10 +110,13 @@ const Login = () => {
               <button type="submit" className="btn btn-primary">
                 Login
               </button>
-              <h6>New user?</h6>
-              <span>
-                <Link to="/register">Register Here</Link>
-              </span>
+              <h6>
+                New user?{" "}
+                <span className="text-blue-600 underline">
+                  {" "}
+                  <Link to="/register">Register Here</Link>
+                </span>
+              </h6>
             </div>
           </form>
           <div className="ml-6">
