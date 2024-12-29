@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -35,14 +35,30 @@ const Register = () => {
     }
 
     console.log(user);
-
+//create user using email and password
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         const user = result.user;
         setUserRegister(user);
-        toast.success("User Register Successfully");
+        // toast.success("User Register Successfully");
         setSuccess("User Registered Successfully");
         console.log("signUP", user);
+
+        //update profile
+
+
+        updateProfile(user,{
+          displayName: name, photoURL: ""
+        }).then(() => {
+        toast.update("Profile Updated with displayName Successfully")
+          // ...
+        }).catch((error) => {
+          // An error occurred
+          // ...
+        });
+
+        sendEmailVerification(user).
+        then(()=>alert("Email Verification Sent "))	
       })
       .catch((error) => {
         console.error(error);

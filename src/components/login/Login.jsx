@@ -29,10 +29,20 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
         const user = result.user;
+        console.log(user)
 
-        if (user?.uid && toast.success(`${user.email} login successfully`))
-          setSuccess("User Login Successfully");
-        setLoginUser(user);
+        // if (user?.uid && toast.success(`${user.email} login successfully`))
+        //   setSuccess("User Login Successfully"); 
+        // setLoginUser(user);
+        if (user?.emailVerified===true){
+          toast.success(`${user.email} login successfully`)
+          setSuccess("User Login Successfully")
+          setLoginUser(user);
+        } else {
+          toast.error("Please Verify Your Email")
+          alert("Please Verify Your Email First!")
+        } 
+
       })
       .catch((error) => {
         setRegisterError(error.message);
